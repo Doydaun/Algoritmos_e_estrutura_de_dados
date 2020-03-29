@@ -1,0 +1,125 @@
+package Lista01;
+
+public class ListaComArray {
+	private String[] vetor;
+	private int proximo = 0;
+	
+	// construtor
+	public ListaComArray() {
+		vetor = new String[100];
+	}
+	
+	public ListaComArray(int tamanho) {
+		vetor = new String[tamanho];
+	}
+	
+	// metodos
+	public void insere(String valor) {
+		if (proximo == vetor.length) {
+			expande();
+		}
+		vetor[proximo] = valor;
+		proximo++;
+	}
+	
+	private void expande() {
+		String[] novoVetor = new String[vetor.length * 2];  //dobrar o tamanho atual
+		for (int i=0; i < vetor.length; i++) {
+			novoVetor[i] = vetor[i];
+		}
+		vetor = novoVetor;
+	}
+	
+	public void insere(String valor, int posicao) {
+		if (posicao < 0 || posicao > proximo) {
+			throw new ListaException("Posicao invalida");			
+		}
+		if (proximo == vetor.length) {
+			expande();
+		}		
+		String temp;
+		for (int i=posicao; i <= proximo; i++) {
+			temp = vetor[i];
+			vetor[i] = valor;
+			valor = temp;
+		}
+		proximo++;
+	}
+	
+	public int localiza(String valor) {
+		for (int i=0; i < proximo; i++) {
+			if (vetor[i].equals(valor)) {
+				return i;
+			}
+		}
+		return -1; 
+	}
+	
+	public String retira(int posicao) {
+		if (posicao < 0 || posicao >= proximo) {
+			throw new ListaException("Posicao invalida");			
+		}		
+		String retorno = vetor[posicao];
+		for (int i = posicao; i < proximo-1; i++) {
+			vetor[i] = vetor[i+1];
+		}
+		proximo--;
+		vetor[proximo] = null; // opcional
+		return retorno;
+	}
+	
+	public String imprime() {
+		String retorno = "[";
+		for (int i=0; i < proximo; i++) {
+			retorno += vetor[i]+", ";
+		}
+		retorno += "]";
+		return  retorno;
+	}
+	
+	public ListaComArray concatena(ListaComArray outra) {
+		int novoTamanho = this.getQuantidade() + outra.getQuantidade();
+		
+		ListaComArray nova = new ListaComArray(novoTamanho);
+		
+		for (int i = 0; i < proximo; i++) {
+			nova.insere(vetor[i]);
+		}
+		for (int i = 0; i < outra.getQuantidade(); i++ ) {
+			nova.insere(outra.busca(i));
+		}
+		return nova;
+	}
+	
+	public String busca(int posicao) {
+		return vetor[posicao];
+	}
+	
+	public int getQuantidade() {
+		return this.proximo;
+	}
+	
+	public ListaComArray divide() {
+		ListaComArray nova = new ListaComArray();
+		int meio = this.getQuantidade() / 2;
+		
+		for (int i=meio; i < proximo; i++) {
+			nova.insere(vetor[i]);
+			vetor[i] = null;
+		}
+		proximo = meio;
+		return nova;
+	}
+	
+	public ListaComArray copia() {
+		ListaComArray nova = new ListaComArray();
+		for (int i=0; i < proximo; i++) {
+			nova.insere(vetor[i]);
+		}
+		return nova;
+	}
+	
+	public boolean estaVazia() {
+		return (proximo == 0);
+	}
+}
