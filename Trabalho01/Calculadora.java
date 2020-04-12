@@ -1,106 +1,107 @@
+
+/* Autores
+ * 
+ *  Luis Augusto Kühn
+ *  Tharcisio Hernani Vitor Felipe Pereira
+ *  Thomas Ricardo Reinke
+ *  
+*/
+
 package Trabalho01;
 
 public class Calculadora<T> {
-	
-	
+
+
 	private double n1, n2;
 	private String operador;
 	private String expressao;
-	
+
 	public void setExpressao(String expressao) {
+
 		this.expressao = expressao;
-		
+
 	}
 
-    public double calc() {
+	public double calc() {
 
-        switch (this.operador) {
+		switch (this.operador) {
 
-            case "+":
+		case "+":
 
-                return this.n1 + this.n2;
+			return this.n2 + this.n1;
 
-            case "-":
+		case "-":
 
-                return this.n1 - this.n2;
+			return this.n2 - this.n1;
 
-            case "/":
+		case "/":
 
-                return this.n1 / this.n2;
+			return this.n2 / this.n1;
 
-            case "*":
+		case "*":
 
-                return this.n1 * this.n2;
+			return this.n2 * this.n1;
 
-            default:
+		default:
 
-                return 0;
+			return 0;
 
-        }
+		}
 
-    }
-	
-	public void usePilhaLista() {
-		
-        PilhaLista lista = new PilhaLista();
+	}
+
+	public double usePilhaLista() {
+
+		PilhaLista<Double> lista = new PilhaLista<>();
 
 		for (String caracter : this.expressao.split(" ")) {
-			
-			
-            // Aqui entra todos os números
 
-            // 1
-            // -1
-            // -2.4
-            // -? d+ (. d+)?
-            if (caracter.matches("-?\\d+(\\.\\d+)?")) {
+			if (caracter.matches("-?\\d+(\\.\\d+)?")) {
 
-                lista.push(caracter);
+				lista.push(Double.parseDouble(caracter));
 
-            // Aqui entra quando for operação
-            } else {
+			} else {
 
-                //lista.push(caracter);
+				this.operador = caracter;
 
-                this.operador = caracter;
+				this.n1 =  lista.pop();
+				this.n2 =  lista.pop();
 
-                this.n1 =  (Double) lista.pop();
-                this.n2 =  (Double) lista.pop();
+				lista.push(this.calc());
 
-                lista.push(this.calc());
-                               
+			}
 
-            }
+		}
 
-        }
-
-        System.out.println(lista.peek());
+		return lista.pop();
 
 	}
-	
-	public void usePilhaVetor() {
-		
-		
+
+	public double usePilhaVetor() {
+
+		PilhaVetor<Double> lista = new PilhaVetor<>();
+
+		for (String caracter : this.expressao.split(" ")) {
+
+			if (caracter.matches("-?\\d+(\\.\\d+)?")) {
+
+				lista.push(Double.parseDouble(caracter));
+
+			} else {
+
+				this.operador = caracter;
+
+				this.n1 =  lista.pop();
+				this.n2 =  lista.pop();
+
+				lista.push(this.calc());
+
+			}
+
+		}
+
+		return lista.pop();
+
 	}
-    
 
-    public static void main(String[] args) {
-        
-        Calculadora calc = new Calculadora();
-
-        calc.setExpressao("1 7 + 7 -");          
-
-        calc.usePilhaLista();
-
-    }
-
-	
-	
-    
 }
-
-
-//divide a primeira posição por espaços e guarda em parts[]
-//		String[] parts = entrada[0].split(" ");
-
-

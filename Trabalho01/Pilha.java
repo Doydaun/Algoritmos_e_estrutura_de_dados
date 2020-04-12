@@ -1,3 +1,12 @@
+
+/* Autores
+ * 
+ *  Luis Augusto Kühn
+ *  Tharcisio Hernani Vitor Felipe Pereira
+ *  Thomas Ricardo Reinke
+ *  
+*/
+
 package Trabalho01;
 
 public interface Pilha<T> {
